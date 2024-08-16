@@ -1,4 +1,4 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# 75Hard With Friends
 
 ## Getting Started
 
@@ -19,6 +19,59 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
 
 This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+
+## File Structure
+
+```
+75hard/
+├── public/
+│   ├── favicon.ico
+│   └── images/
+├── src/
+│   ├── app/
+│   │   ├── auth/
+│   │   │   ├── login/
+│   │   │   │   └── page.js
+│   │   │   ├── signup/
+│   │   │   │   └── page.js
+│   │   │   ├── logout/
+│   │   │   │   └── page.js
+│   │   ├── dashboard/
+│   │   │   └── page.js
+│   │   ├── layout.js
+│   │   ├── page.js
+│   │   └── globals.css
+│   ├── components/
+│   │   ├── Auth/
+│   │   │   ├── LoginForm.js
+│   │   │   ├── SignupForm.js
+│   │   │   └── AuthProvider.js
+│   │   ├── Layout/
+│   │   │   ├── Header.js
+│   │   │   ├── Footer.js
+│   │   │   └── Navbar.js
+│   │   └── UI/
+│   │       ├── Button.js
+│   │       └── Input.js
+│   ├── styles/
+│   │   ├── globals.css
+│   │   └── tailwind.css
+│   ├── lib/
+│   │   └── appwrite.js
+│   ├── context/
+│   │   └── AuthContext.js
+│   ├── utils/
+│   │   ├── validateEmail.js
+│   │   └── formatDate.js
+├── .env.local
+├── .gitignore
+├── next.config.js
+├── postcss.config.js
+├── tailwind.config.js
+├── README.md
+├── package.json
+└── package-lock.json
+```
 
 ## Learn More
 
