@@ -5,8 +5,8 @@ import { Client, Account } from "appwrite";
 const client = new Client();
 
 client
-  .setEndpoint(process.env.NEXT_PUBLIC_APPWRITE_ENDPOINT) // Your Appwrite Endpoint
-  .setProject(process.env.NEXT_PUBLIC_APPWRITE_PROJECT); // Your project ID
+  .setEndpoint(process.env.NEXT_PUBLIC_APPWRITE_ENDPOINT)
+  .setProject(process.env.NEXT_PUBLIC_APPWRITE_PROJECT);
 
 // Create a new Account instance
 export const account = new Account(client);
