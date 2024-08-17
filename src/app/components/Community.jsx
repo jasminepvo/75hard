@@ -12,7 +12,7 @@ export default function Community() {
 
     return (
         <div className="flex flex-col items-center">
-            <h2 className="text-xl font-bold mb-4">Community</h2>
+            <h2 className="text-xl font-bold mb-4">Cheer On Your Friends🎉</h2>
             <ul className="space-y-2">
                 {friends.map((friend, index) => (
                     <li key={index} className="text-lg">
