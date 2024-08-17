@@ -1,45 +1,33 @@
 // src/lib/server/appwrite.js
-"use server";
-import { Client, Account } from "node-appwrite";
-import { cookies } from "next/headers";
+import { Client, Account } from "appwrite";
+
+// Create a new Client
+const client = new Client();
+
+client
+  .setEndpoint(process.env.NEXT_PUBLIC_APPWRITE_ENDPOINT) // Your Appwrite Endpoint
+  .setProject(process.env.NEXT_PUBLIC_APPWRITE_PROJECT); // Your project ID
+
+// Create a new Account instance
+export const account = new Account(client);
 
 export async function createSessionClient() {
-  const client = new Client()
-    .setEndpoint(process.env.NEXT_PUBLIC_APPWRITE_ENDPOINT)
-    .setProject(process.env.NEXT_PUBLIC_APPWRITE_PROJECT);
-
-  const session = cookies().get("my-custom-session");
-  if (!session || !session.value) {
-    throw new Error("No session");
+  const sessionCookie = cookies().get("my-custom-session");
+  if (!sessionCookie) {
+    console.error("No session cookie found");
+    throw new Error("No session found");
   }
 
-  client.setSession(session.value);
-
-  return {
-    get account() {
-      return new Account(client);
-    },
-  };
+  client.setJWT(sessionCookie.value);
+  return { account };
 }
 
-export async function createAdminClient() {
-  const client = new Client()
-    .setEndpoint(process.env.NEXT_PUBLIC_APPWRITE_ENDPOINT)
-    .setProject(process.env.NEXT_PUBLIC_APPWRITE_PROJECT)
-    .setKey(process.env.NEXT_APPWRITE_KEY);
-
-  return {
-    get account() {
-      return new Account(client);
-    },
-  };
-}
-
+// Function to get the logged-in user
 export async function getLoggedInUser() {
   try {
-    const { account } = await createSessionClient();
-    return await account.get();
+    const user = await account.get(); // Fetch user account details
+    return user;
   } catch (error) {
-    return null;
+    return null; // Return null if no user is logged in or if there's an error
   }
 }

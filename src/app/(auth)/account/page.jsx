@@ -2,23 +2,10 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation"; // Use client-side routing
-import { getLoggedInUser } from "@/lib/server/appwrite";
+import { account, getLoggedInUser } from "@/lib/server/appwrite";
 import Progress from "../../components/Progress";
 import Track from "../../components/Track";
 import Community from "../..//components/Community";
-
-// A client-side function to handle sign-out
-async function handleSignOut() {
-    const response = await fetch("/api/signout", {
-        method: "POST",
-    });
-
-    if (response.ok) {
-        window.location.href = "/signup";
-    } else {
-        console.error("Sign out failed");
-    }
-}
 
 export default function HomePage() {
     const [activeTab, setActiveTab] = useState('track'); // Default tab is Track
@@ -38,7 +25,17 @@ export default function HomePage() {
         fetchUser();
     }, []);
 
-    if (!user) return null; // Prevent rendering before user is fetched
+    const handleSignOut = async () => {
+        try {
+            await account.deleteSession("current"); // Sign out the user
+            setUser(null); // Clear the user state
+            router.push("/"); // Redirect to the home page after sign out
+        } catch (error) {
+            console.error("Sign out failed:", error);
+        }
+    };
+
+    if (!user) return null; // Don't render the page until user state is resolved
 
     const renderContent = () => {
         switch (activeTab) {
@@ -54,53 +51,45 @@ export default function HomePage() {
     };
 
     return (
-        <div className="container mx-auto p-4">
-            <div className="flex justify-between items-center mb-4">
-                <ul>
-                    <li>
-                        <strong>Email:</strong> {user.email}
-                    </li>
-                    <li>
-                        <strong>Name:</strong> {user.name}
-                    </li>
-                    <li>
-                        <strong>ID:</strong> {user.$id}
-                    </li>
-                </ul>
+        <div className="flex flex-col justify-between h-screen">
+            <div className="text-center m-4">
+                <h1 className="text-xl">
+                    Welcome back <strong>{user.name}!</strong>
+                </h1>
                 <button
                     onClick={handleSignOut}
-                    className="px-4 py-2 bg-red-500 text-white rounded"
+                    className="text-red-500 mt-2 underline font-light text-xs"
                 >
                     Sign out
                 </button>
             </div>
 
+            {/* Render the content based on the active tab */}
+            <div className="flex-grow flex items-top justify-center">
+                {renderContent()}
+            </div>
+
             {/* Navigation Tabs */}
-            <nav className="flex justify-around mb-6">
+            <nav className="flex justify-around py-4 border-t">
                 <button
                     onClick={() => setActiveTab('progress')}
-                    className={`px-4 py-2 ${activeTab === 'progress' ? 'font-bold border-b-2 border-blue-500' : ''}`}
+                    className={`flex-1 text-center px-4 py-2 ${activeTab === 'progress' ? 'font-bold border-b-2 border-blue-500' : ''}`}
                 >
                     Progress
                 </button>
                 <button
                     onClick={() => setActiveTab('track')}
-                    className={`px-4 py-2 ${activeTab === 'track' ? 'font-bold border-b-2 border-blue-500' : ''}`}
+                    className={`flex-1 text-center px-4 py-2 ${activeTab === 'track' ? 'font-bold border-b-2 border-blue-500' : ''}`}
                 >
                     Track
                 </button>
                 <button
                     onClick={() => setActiveTab('community')}
-                    className={`px-4 py-2 ${activeTab === 'community' ? 'font-bold border-b-2 border-blue-500' : ''}`}
+                    className={`flex-1 text-center px-4 py-2 ${activeTab === 'community' ? 'font-bold border-b-2 border-blue-500' : ''}`}
                 >
                     Community
                 </button>
             </nav>
-
-            {/* Render the content based on the active tab */}
-            <div className="bg-white p-6 rounded-lg shadow-lg">
-                {renderContent()}
-            </div>
         </div>
     );
 }

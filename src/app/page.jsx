@@ -1,7 +1,7 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { account } from "@/lib/server/appwrite";
+import { account, getLoggedInUser } from "@/lib/server/appwrite";
 
 export default function Home() {
     const [email, setEmail] = useState("");
@@ -11,16 +11,42 @@ export default function Home() {
 
     const login = async () => {
         try {
-            await account.createEmailSession(email, password);
+            // Check if a user is already logged in
+            const existingUser = await getLoggedInUser();
+            if (existingUser) {
+                setError("You are already logged in.");
+                router.push("/account");
+                return;
+            }
+
+            // Create a new session if no session is active
+            await account.createEmailPasswordSession(email, password);
             router.push("/account"); // Redirect to account page upon successful login
         } catch (error) {
-            setError("Login failed. Please check your credentials.");
+            console.error("Login error:", error);
+            if (error.code === 401) {
+                setError("Login failed. Please check your credentials.");
+            } else if (error.code === 403) {
+                setError("You are already logged in.");
+            } else {
+                setError("An unexpected error occurred.");
+            }
         }
     };
 
     const redirectToSignup = () => {
         router.push("/signup");
     };
+
+    useEffect(() => {
+        const checkSession = async () => {
+            const user = await getLoggedInUser();
+            if (user) {
+                router.push("/account");
+            }
+        };
+        checkSession();
+    }, []);
 
     return (
         <div className="flex flex-col items-center justify-center h-screen">
