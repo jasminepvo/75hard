@@ -2,3 +2,23 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+:root {
+  --color-teal: #008080;
+  --color-green: #00C853;
+  --color-brown: #6D4C41;
+  --color-beige: #EFEFEF;
+}
+
+body {
+  background-color: var(--color-beige);
+  color: var(--color-brown);
+}
+
+h1 {
+  color: var(--color-teal);
+}
+
+p {
+  color: var(--color-green);
+}
