@@ -12,7 +12,7 @@ export default function Track() {
 
     return (
         <div className="flex flex-col items-center">
-            <h2 className="text-6xl font-bold m-8">Day 11/75</h2>
+            <h2 className="text-6xl font-extrabold font-subheading m-8">Day 11/75</h2>
             <ul className="space-y-2">
                 {tasks.map((task, index) => (
                     <li key={index} className="flex items-center space-x-2">

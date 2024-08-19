@@ -51,14 +51,14 @@ export default function HomePage() {
     };
 
     return (
-        <div className="flex flex-col justify-between h-screen">
-            <div className="text-center m-4">
+        <div className="flex flex-col justify-between h-screen bg-softBeige text-earthyBrown">
+            <div className="text-center m-4 text-strongTeal">
                 <h1 className="text-xl">
-                    Welcome back <strong>{user.name}!</strong>
+                    Welcome back <strong className="">{user.name}!</strong>
                 </h1>
                 <button
                     onClick={handleSignOut}
-                    className="text-red-500 mt-2 underline font-light text-xs"
+                    className="text-strongTeal mt-2 underline font-light text-xs"
                 >
                     Sign out
                 </button>
@@ -73,19 +73,19 @@ export default function HomePage() {
             <nav className="flex justify-around py-4 border-t">
                 <button
                     onClick={() => setActiveTab('progress')}
-                    className={`flex-1 text-center px-4 py-2 ${activeTab === 'progress' ? 'font-bold border-b-2 border-blue-500' : ''}`}
+                    className={`uppercase flex-1 text-center px-4 py-2 ${activeTab === 'progress' ? 'font-bold border-b-2 border-earthyBrown' : ''}`}
                 >
                     Progress
                 </button>
                 <button
                     onClick={() => setActiveTab('track')}
-                    className={`flex-1 text-center px-4 py-2 ${activeTab === 'track' ? 'font-bold border-b-2 border-blue-500' : ''}`}
+                    className={`uppercase flex-1 text-center px-4 py-2 ${activeTab === 'track' ? 'font-bold border-b-2 border-earthyBrown' : ''}`}
                 >
                     Track
                 </button>
                 <button
                     onClick={() => setActiveTab('community')}
-                    className={`flex-1 text-center px-4 py-2 ${activeTab === 'community' ? 'font-bold border-b-2 border-blue-500' : ''}`}
+                    className={`uppercase flex-1 text-center px-4 py-2 ${activeTab === 'community' ? 'font-bold border-b-2 border-earthyBrown' : ''}`}
                 >
                     Community
                 </button>
