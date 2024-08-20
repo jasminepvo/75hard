@@ -103,5 +103,29 @@ chose appwrite bc its a popular backend server that will help with auth, databas
 
 relatively easy to set up so far
 
+Logic Breakdown:
+
+	1.	Track Task Completion:
+	•	Track the completion of each task in a day.
+	•	If all tasks are completed, check the current date and compare it with the date of the last completed day.
+	2.	Date Validation:
+	•	First Uncompleted Day: When all tasks are completed, check if the first uncompleted day’s date is either:
+	•	Unset (meaning this is the first day being completed).
+	•	The current day (meaning this is the correct day in sequence).
+	•	If the above conditions are met, mark the day as completed and save the date.
+	3.	Reset on Failure:
+	•	If the current day’s date is not in sequence (e.g., if yesterday was completed but today isn’t the next day in the sequence), then reset all days and start over.
+	•	This prevents the user from filling days out of order and enforces the discipline required by the 75 Hard Challenge.
+	4.	Updating Progress:
+	•	Only move to the next day if all tasks for the current day are completed and the date is correct.
+	•	If the conditions are not met, reset the entire progress.
+
+Does It Make Sense?
+
+Yes, this logic makes perfect sense for the 75 Hard Challenge:
+
+	•	Strict Sequence: The challenge requires strict daily completion, so ensuring that days are filled sequentially and resetting on failure is exactly what’s needed.
+	•	Daily Reset: If a user fails to complete the tasks on any day or tries to skip a day, they must start over, which is implemented with the reset logic.
+
 
  -->

@@ -1,5 +1,5 @@
 // src/lib/server/appwrite.js
-import { Client, Account } from "appwrite";
+import { Client, Account, ID, Permission, Role } from "appwrite";
 
 // Create a new Client
 const client = new Client();
@@ -31,3 +31,7 @@ export async function getLoggedInUser() {
     return null; // Return null if no user is logged in or if there's an error
   }
 }
+
+// Create a new Database instance for tasks
+import { Databases } from "node-appwrite";
+export const databases = new Databases(client);

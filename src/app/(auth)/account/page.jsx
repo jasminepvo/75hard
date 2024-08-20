@@ -1,15 +1,15 @@
-"use client"; // Ensure this is a client component
-
+"use client"
 import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation"; // Use client-side routing
+import { useRouter } from "next/navigation";
 import { account, getLoggedInUser } from "@/lib/server/appwrite";
 import Progress from "../../components/Progress";
 import Track from "../../components/Track";
-import Community from "../..//components/Community";
+import Community from "../../components/Community";
 
 export default function HomePage() {
-    const [activeTab, setActiveTab] = useState('track'); // Default tab is Track
+    const [activeTab, setActiveTab] = useState('track');
     const [user, setUser] = useState(null);
+    const [completedDays, setCompletedDays] = useState(Array(75).fill(false)); // Initialize all days as incomplete
     const router = useRouter();
 
     useEffect(() => {
@@ -27,22 +27,28 @@ export default function HomePage() {
 
     const handleSignOut = async () => {
         try {
-            await account.deleteSession("current"); // Sign out the user
-            setUser(null); // Clear the user state
-            router.push("/"); // Redirect to the home page after sign out
+            await account.deleteSession("current");
+            setUser(null);
+            router.push("/");
         } catch (error) {
             console.error("Sign out failed:", error);
         }
     };
 
-    if (!user) return null; // Don't render the page until user state is resolved
+    const updateCompletedDay = (dayIndex, isCompleted) => {
+        const updatedCompletedDays = [...completedDays];
+        updatedCompletedDays[dayIndex] = isCompleted;
+        setCompletedDays(updatedCompletedDays);
+    };
+
+    if (!user) return null;
 
     const renderContent = () => {
         switch (activeTab) {
             case 'progress':
-                return <Progress />;
+                return <Progress completedDays={completedDays} />;
             case 'track':
-                return <Track />;
+                return <Track updateCompletedDay={updateCompletedDay} completedDays={completedDays} />;
             case 'community':
                 return <Community />;
             default:
@@ -64,12 +70,10 @@ export default function HomePage() {
                 </button>
             </div>
 
-            {/* Render the content based on the active tab */}
             <div className="flex-grow flex items-top justify-center">
                 {renderContent()}
             </div>
 
-            {/* Navigation Tabs */}
             <nav className="flex justify-around py-4 border-t">
                 <button
                     onClick={() => setActiveTab('progress')}
